@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Checker by Umam - Gmail Captcha & Verification Live Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=20260914_04">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Top Header -->
+        <header class="navbar">
+            <div class="nav-left">
+                <div class="brand-block">
+                    <div class="brand-avatar">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                            <path d="M9 14l2 2 4-4" stroke="#34d399" stroke-width="2.5"></path>
+                        </svg>
+                    </div>
+                    <div class="brand-info">
+                        <div class="brand-name">Mail Checker</div>
+                        <div class="brand-desc">Gmail Captcha & Verification Suite <span class="author-badge">by Umam</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu (Tanpa Tombol Login) -->
+            <div class="nav-menu">
+                <button class="nav-tab-btn active" id="tab-nav-checker">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    Live Checker
+                </button>
+                <button class="nav-tab-btn" id="tab-nav-history">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Riwayat Akun (<span id="nav-history-count">0</span>)
+                </button>
+            </div>
+        </header>
+
+        <!-- VIEW 1: LIVE CHECKER -->
+        <main class="main-grid" id="view-checker">
+            <!-- Left Panel: Input -->
+            <section class="card-box input-box">
+                <div class="input-head">
+                    <div class="input-title-row">
+                        <h2 class="section-title">Input Email Target</h2>
+                        <button class="btn-clean-pill" id="btn-auto-format" title="Otomatis tambahkan @gmail.com jika hanya username dan rapikan format">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Auto Complete
+                        </button>
+                    </div>
+                    <p class="section-subtitle">Tulis username (otomatis + @gmail.com) atau tempel format email:pass.</p>
+                </div>
+
+                <!-- Info pill -->
+                <div class="meta-pill">
+                    <span class="meta-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <span id="email-count-label">0 email</span>
+                    </span>
+                    <span class="meta-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span id="estimate-label">Estimasi: ~0 dtk</span>
+                    </span>
+                </div>
+
+                <!-- Textarea -->
+                <div class="textarea-container">
+                    <textarea 
+                        id="email-input" 
+                        placeholder="Tempel daftar email di sini...&#10;yogaxilham18@gmail.com&#10;mayaxdewi0@gmail.com&#10;rinatinax11@gmail.com"
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+
+                <!-- Settings Bar -->
+                <div class="options-bar">
+                    <div class="opt-item">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="headless-check" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="opt-text">Headless</span>
+                    </div>
+                    <div class="opt-item">
+                        <label for="delay-input">Jeda:</label>
+                        <input type="number" id="delay-input" value="2" min="0" max="30" step="0.5">
+                        <span>dtk</span>
+                    </div>
+                    <div class="opt-item">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="use-chrome-check" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="opt-text">Chrome Asli</span>
+                    </div>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="btn-group">
+                    <button class="action-btn btn-start" id="btn-start">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        Mulai Cek
+                    </button>
+                    <button class="action-btn btn-stop" id="btn-stop" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"></rect></svg>
+                        Stop
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Panel: Results & Stats -->
+            <section class="card-box results-box">
+                <!-- Top 5 Metric Cards -->
+                <div class="metric-row">
+                    <div class="metric-card card-total">
+                        <div class="card-glow glow-blue"></div>
+                        <div class="card-accent-bar bar-blue"></div>
+                        <div class="metric-card-head">
+                            <span class="metric-label">TOTAL INPUT</span>
+                            <div class="metric-icon-box icon-blue">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-val val-blue" id="stat-total">0</div>
+                    </div>
+
+                    <div class="metric-card card-clean">
+                        <div class="card-glow glow-green"></div>
+                        <div class="card-accent-bar bar-green"></div>
+                        <div class="metric-card-head">
+                            <span class="metric-label">CLEAN (NO CAPTCHA)</span>
+                            <div class="metric-icon-box icon-green">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <polyline points="9 12 11 14 15 10"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-val val-green" id="stat-clean">0</div>
+                    </div>
+
+                    <div class="metric-card card-captcha">
+                        <div class="card-glow glow-orange"></div>
+                        <div class="card-accent-bar bar-orange"></div>
+                        <div class="metric-card-head">
+                            <span class="metric-label">ADA CAPTCHA</span>
+                            <div class="metric-icon-box icon-orange">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                                    <circle cx="12" cy="5" r="2"></circle>
+                                    <path d="M12 7v4"></path>
+                                    <line x1="8" y1="16" x2="8.01" y2="16"></line>
+                                    <line x1="16" y1="16" x2="16.01" y2="16"></line>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-val val-orange" id="stat-captcha">0</div>
+                    </div>
+
+                    <div class="metric-card card-notfound">
+                        <div class="card-glow glow-gray"></div>
+                        <div class="card-accent-bar bar-gray"></div>
+                        <div class="metric-card-head">
+                            <span class="metric-label">NOT FOUND</span>
+                            <div class="metric-icon-box icon-gray">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-val val-gray" id="stat-notfound">0</div>
+                    </div>
+
+                    <div class="metric-card card-blocked">
+                        <div class="card-glow glow-red"></div>
+                        <div class="card-accent-bar bar-red"></div>
+                        <div class="metric-card-head">
+                            <span class="metric-label">RECHECK</span>
+                            <div class="metric-icon-box icon-red">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-val val-red" id="stat-blocked">0</div>
+                    </div>
+                </div>
+
+                <!-- Status Progress Line -->
+                <div class="saved-status-row">
+                    <div class="saved-info" id="saved-info-text">0 hasil tersimpan di perangkat</div>
+                    <div class="remain-info">
+                        <span id="remain-label">Sisa: --</span>
+                        <span id="percent-label">0%</span>
+                    </div>
+                </div>
+                <div class="subtle-progress-bar">
+                    <div class="subtle-progress-fill" id="progress-fill" style="width: 0%;"></div>
+                </div>
+
+                <!-- Filter Tabs & Actions -->
+                <div class="table-toolbar">
+                    <div class="filter-tab-group">
+                        <button class="filter-tab active" data-filter="ALL">
+                            Semua (<span id="count-all">0</span>)
+                        </button>
+                        <button class="filter-tab tab-tag-clean" data-filter="CLEAN" title="Bebas Captcha, langsung ke password">
+                            ✓ Clean (<span id="count-clean">0</span>)
+                        </button>
+                        <button class="filter-tab tab-tag-captcha" data-filter="CAPTCHA" title="Memicu captcha atau bot check">
+                            ⚠️ Captcha (<span id="count-captcha">0</span>)
+                        </button>
+                        <button class="filter-tab" data-filter="NOT_FOUND">
+                            Not Found (<span id="count-notfound">0</span>)
+                        </button>
+                        <button class="filter-tab" data-filter="BLOCKED">
+                            Recheck (<span id="count-blocked">0</span>)
+                        </button>
+                    </div>
+
+                    <div class="table-actions">
+                        <button class="btn-tool" id="btn-toggle-show-history" title="Tampilkan riwayat akun tersimpan langsung ke tabel Live Checker">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            <span id="show-history-btn-text">Tampilkan Riwayat (<span id="btn-hist-count">0</span>)</span>
+                        </button>
+                        <button class="btn-tool btn-warning-pill" id="btn-quick-del-captcha" title="Hapus seluruh akun berstatus Captcha dari riwayat" style="display: none;">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            Hapus Captcha
+                        </button>
+                        <button class="btn-tool" id="btn-copy-filtered">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span id="copy-btn-text">Copy (Semua)</span>
+                        </button>
+                        <button class="btn-tool btn-tool-primary" id="btn-open-export">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Export / Unduh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Table -->
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th>Alamat Email</th>
+                                <th style="width: 150px; text-align: center;">Status</th>
+                                <th style="width: 110px; text-align: right;">Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-tbody">
+                            <tr class="empty-table-row">
+                                <td colspan="4">
+                                    <div class="empty-message">Belum ada data pengecekan</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- VIEW 2: RIWAYAT AKUN (DATABASE PERSISTEN) -->
+        <main class="history-grid" id="view-history" style="display: none;">
+            <section class="card-box history-box">
+                <div class="history-head">
+                    <div class="history-title-block">
+                        <h2 class="section-title">Riwayat Akun Tersimpan</h2>
+                        <p class="section-subtitle">Daftar seluruh akun yang pernah dicek, tersimpan permanen di perangkat lokal Anda.</p>
+                    </div>
+                    <div class="history-actions">
+                        <button class="btn-tool" id="btn-refresh-history">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                            Segarkan
+                        </button>
+                        <button class="btn-tool btn-warning-pill" id="btn-clear-captcha-history" title="Hapus semua email berstatus CAPTCHA dari riwayat">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            ⚠️ Hapus Khusus Captcha
+                        </button>
+                        <button class="btn-tool btn-tool-primary" id="btn-export-history-modal">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Export Riwayat
+                        </button>
+                        <button class="btn-tool btn-danger-pill" id="btn-clear-history">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            Hapus Semua Riwayat
+                        </button>
+                    </div>
+                </div>
+
+                <!-- History Filters -->
+                <div class="history-toolbar">
+                    <div class="filter-tab-group">
+                        <button class="filter-tab active history-filter-tab" data-filter="ALL">
+                            Semua (<span id="hist-count-all">0</span>)
+                        </button>
+                        <button class="filter-tab history-filter-tab tab-tag-clean" data-filter="CLEAN">
+                            ✓ Clean (<span id="hist-count-clean">0</span>)
+                        </button>
+                        <button class="filter-tab history-filter-tab tab-tag-captcha" data-filter="CAPTCHA">
+                            ⚠️ Captcha (<span id="hist-count-captcha">0</span>)
+                        </button>
+                        <button class="filter-tab history-filter-tab" data-filter="NOT_FOUND">
+                            Not Found (<span id="hist-count-notfound">0</span>)
+                        </button>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="history-search-input" placeholder="Cari email...">
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px;">No</th>
+                                <th>Alamat Email</th>
+                                <th style="width: 130px; text-align: center;">Status</th>
+                                <th>Keterangan Detail</th>
+                                <th style="width: 140px; text-align: right;">Waktu / Tanggal</th>
+                                <th style="width: 50px; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-tbody">
+                            <tr class="empty-table-row">
+                                <td colspan="6">
+                                    <div class="empty-message">Belum ada riwayat akun tersimpan</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- EXPORT MODAL (FITUR PILIH EXPORT) -->
+    <div class="modal-overlay" id="export-modal" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-head">
+                <div class="modal-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Pilihan Export Data
+                </div>
+                <button class="btn-close-modal" id="btn-close-export">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Sumber Data -->
+                <div class="form-group">
+                    <label class="form-label">1. Sumber Data:</label>
+                    <div class="radio-cards">
+                        <label class="radio-card">
+                            <input type="radio" name="export-source" value="current" checked>
+                            <div class="radio-content">
+                                <div class="rc-title">Hasil Pengecekan Sesi Ini</div>
+                                <div class="rc-sub" id="modal-curr-count">0 email</div>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="export-source" value="history">
+                            <div class="radio-content">
+                                <div class="rc-title">Seluruh Riwayat Tersimpan</div>
+                                <div class="rc-sub" id="modal-hist-count">0 email</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Kategori Status -->
+                <div class="form-group">
+                    <label class="form-label">2. Pilih Kategori Status yang Ingin Diunduh:</label>
+                    <select class="form-select" id="export-status-select">
+                        <option value="ALL">Semua Status (All Results)</option>
+                        <option value="CLEAN" selected>Hanya CLEAN (Bebas Captcha - Langsung Password)</option>
+                        <option value="CAPTCHA">Hanya CAPTCHA (Muncul Tantangan Bot)</option>
+                        <option value="NOT_FOUND">Hanya NOT FOUND (Akun Tidak Ada)</option>
+                        <option value="BLOCKED">Hanya RECHECK / ERROR</option>
+                    </select>
+                </div>
+
+                <!-- Format File -->
+                <div class="form-group">
+                    <label class="form-label">3. Format File:</label>
+                    <div class="format-options">
+                        <label class="radio-label">
+                            <input type="radio" name="export-format" value="txt_email_only" checked>
+                            <span><strong>TXT (Hanya Alamat Email)</strong> — 1 email per baris, sangat cocok untuk bot / import</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="export-format" value="txt_full">
+                            <span><strong>TXT Lengkap</strong> — Berisi email, status hasil, dan keterangan detail</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="export-format" value="csv">
+                            <span><strong>CSV Spreadsheet</strong> — Format tabel Excel dengan kolom lengkap</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-foot">
+                <button class="btn-cancel" id="btn-cancel-export">Batal</button>
+                <button class="btn-confirm-export" id="btn-confirm-export">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download File Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js?v=2"></script>
+</body>
+</html>
