@@ -1,0 +1,24 @@
+# Data riwayat dan catatan akun (Private / Sensitif)
+history.json
+history copy*.json
+notes.json
+notes copy*.json
+backups/
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*.class
+*.pyc
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Temporary / OS files
+.DS_Store
+Thumbs.db
+*.tmp
+*.log

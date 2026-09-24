@@ -7,7 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=20260914_04">
+    <link rel="stylesheet" href="/static/sweetalert2-dark.min.css">
+    <link rel="stylesheet" href="/static/style.css?v=20260920_01">
 </head>
 <body>
     <div class="app-layout">
@@ -38,6 +39,10 @@
                 <button class="nav-tab-btn" id="tab-nav-history">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                     Riwayat Akun (<span id="nav-history-count">0</span>)
+                </button>
+                <button class="nav-tab-btn" id="tab-nav-notes">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><line x1="9" y1="7" x2="15" y2="7"></line><line x1="9" y1="11" x2="13" y2="11"></line></svg>
+                    Catatan Akun (<span id="nav-notes-count">0</span>)
                 </button>
             </div>
         </header>
@@ -346,6 +351,188 @@
                 </div>
             </section>
         </main>
+
+        <!-- VIEW 3: CATATAN AKUN (FILE EXPLORER STYLE) -->
+        <main class="history-grid" id="view-notes" style="display: none;">
+            <section class="card-box notes-box">
+                <!-- Top Header with 3 Specific Action Buttons -->
+                <div class="history-head">
+                    <div class="history-title-block">
+                        <h2 class="section-title">Catatan Akun</h2>
+                        <p class="section-subtitle">Folder akun berdasarkan ortu, tersusun rapi seperti di File Explorer.</p>
+                    </div>
+                    <div class="history-actions">
+                                                <button class="btn-tool" id="btn-top-backup-notes" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399;" title="Buat cadangan (backup) catatan & riwayat saat ini (otomatis disimpan selama 3 hari)">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            Backup Sekarang
+                        </button>
+                        <button class="btn-tool btn-tool-primary" id="btn-top-add-ortu">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                            + Tambah Folder
+                        </button>
+                        <button class="btn-tool" id="btn-top-import-history">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="14 2 14 8 20 8"></polyline><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                            Import Riwayat
+                        </button>
+                        <button class="btn-tool btn-danger-pill" id="btn-top-clear-all" title="Hapus semua folder dan catatan akun">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            Hapus Semua
+                        </button>
+                        
+                    </div>
+                </div>
+
+                <!-- Explorer Address Bar & Search Toolbar -->
+                <div class="explorer-address-bar">
+                    <div class="explorer-breadcrumbs">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        <span class="crumb-item crumb-root" id="crumb-root" onclick="closeFolder()">Catatan Akun</span>
+                        <span class="crumb-sep" id="crumb-sep" style="display: none;">/</span>
+                        <span class="crumb-item crumb-current" id="crumb-current" style="display: none;"></span>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="folder-search-input" placeholder="Cari folder...">
+                    </div>
+                </div>
+
+                <!-- 1. Folder Grid View (Secara Umum di Luar) -->
+                <div class="folders-grid" id="folders-grid-container">
+                    <!-- Rendered by JS: Blue folder icon + Name, double-click to open, dropzone for drag & drop -->
+                </div>
+
+                <!-- 1B. Daftar Akun Umum (Tampil Full di Luar, Siap Drag & Drop ke Folder Ortu) -->
+                <div class="general-accounts-section" id="general-accounts-section">
+                    <div class="general-accounts-header">
+                        <div class="gah-title-block">
+                            <div class="gah-title-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <h3 class="gah-title">Daftar Akun (Umum)</h3>
+                                <span class="badge-tag" id="badge-general-count" style="background: #1e293b; border-color: #334155; color: #94a3b8;">0 akun</span>
+                            </div>
+                            <p class="gah-subtitle">Tarik (drag & drop) akun di bawah ini langsung ke folder ortu di atas untuk memindahkannya secara otomatis.</p>
+                        </div>
+                        <!-- Multi-selection Action Toolbar (visible when 1+ accounts checked) -->
+                        <div class="gah-actions" id="general-selection-bar" style="display: none;">
+                            <span class="selection-count-label" id="selection-count-label">0 dipilih</span>
+                            <div class="move-group">
+                                <select id="select-move-ortu" class="form-select select-sm">
+                                    <option value="">Pilih Folder Ortu Tujuan...</option>
+                                </select>
+                                <button class="btn-tool btn-tool-primary" id="btn-move-to-ortu" title="Pindahkan akun terpilih ke folder ortu">
+                                    Pindahkan
+                                </button>
+                                <button class="btn-tool btn-danger-pill" id="btn-delete-selected-general" title="Hapus akun terpilih">
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table of General Accounts -->
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 36px; text-align: center;">
+                                        <input type="checkbox" id="chk-select-all-general" title="Pilih Semua">
+                                    </th>
+                                    <th style="width: 40px;">No</th>
+                                    <th>Alamat Email</th>
+                                    <th style="width: 140px;">Password</th>
+                                    <th style="width: 120px; text-align: center;">Status</th>
+                                    <th>Keterangan Detail</th>
+                                    <th style="width: 130px; text-align: right;">Waktu</th>
+                                    <th style="width: 80px; text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="general-emails-tbody">
+                                <tr class="empty-table-row">
+                                    <td colspan="8">
+                                        <div class="empty-message">Belum ada akun di daftar umum. Klik tombol "Import Riwayat" di atas untuk memasukkan akun.</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2. Folder Detail Drilldown View (Muncul Saat Folder Diklik) -->
+                <div class="folder-detail-view" id="folder-detail-view" style="display: none;">
+                    <div class="folder-detail-top">
+                        <button class="btn-back-folders" id="btn-back-to-folders">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            &larr; Kembali ke Daftar Folder
+                        </button>
+                        <div class="folder-detail-title-block">
+                            <div class="folder-title-row">
+                                <svg width="26" height="24" viewBox="0 0 44 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 6C4 4.89543 4.89543 4 6 4H16.5C17.1 4 17.7 4.3 18.1 4.7L21.5 8.5H38C39.1046 8.5 40 9.39543 40 10.5V28C40 29.1046 39.1046 30 38 30H6C4.89543 30 4 29.1046 4 28V6Z" fill="#1d4ed8"/>
+                                    <path d="M6 5H16.2C16.6 5 17 5.2 17.3 5.5L20.5 9H38C38.6 9 39 9.4 39 10V13H5V6C5 5.4 5.4 5 6 5Z" fill="#3b82f6" fill-opacity="0.8"/>
+                                    <rect x="3" y="11" width="38" height="21" rx="3" fill="#2563eb" stroke="#60a5fa" stroke-width="0.75"/>
+                                    <line x1="5" y1="12.5" x2="39" y2="12.5" stroke="#bfdbfe" stroke-width="1" stroke-linecap="round" stroke-opacity="0.9"/>
+                                </svg>
+                                <h3 class="folder-opened-name" id="opened-folder-title">ortu@gmail.com</h3>
+                                <span class="folder-opened-badge" id="opened-folder-count">0 akun</span>
+                            </div>
+                            <div class="folder-opened-meta" id="opened-folder-breakdown">
+                                0 Clean &bull; 0 Captcha &bull; 0 Not Found
+                            </div>
+                        </div>
+                        <div class="folder-detail-actions">
+                            <button class="btn-tool" id="btn-copy-folder-emails" title="Salin semua email dalam folder ini">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                Salin Semua Email
+                            </button>
+                            <button class="btn-tool" id="btn-rename-current-folder" title="Ubah nama folder ini">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                Ubah Nama
+                            </button>
+                            <button class="btn-tool btn-tool-primary" id="btn-send-folder-to-checker" title="Kirim daftar email folder ini langsung ke input Live Checker">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                Cek di Live Checker
+                            </button>
+                            <button class="btn-tool btn-primary-pill" id="btn-add-account-to-folder">
+                                + Tambah Akun
+                            </button>
+                            <button class="btn-tool btn-danger-pill" id="btn-delete-current-folder" title="Hapus folder dari catatan">
+                                Hapus Folder
+                            </button>
+                            <button class="btn-tool btn-danger-pill" id="btn-delete-folder-with-history" style="background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.45); color: #fca5a5;" title="Hapus folder ini, seluruh catatan akun, dan bersihkan riwayatnya">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 3px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                Hapus Folder + Riwayat
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table of emails inside opened folder -->
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 45px;">No</th>
+                                    <th>Alamat Email</th>
+                                    <th style="width: 140px;">Password</th>
+                                    <th style="width: 120px; text-align: center;">Status</th>
+                                    <th>Keterangan Detail</th>
+                                    <th style="width: 130px; text-align: right;">Waktu</th>
+                                    <th style="width: 85px; text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="folder-emails-tbody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
     <!-- EXPORT MODAL (FITUR PILIH EXPORT) -->
@@ -423,6 +610,204 @@
         </div>
     </div>
 
-    <script src="/static/app.js?v=2"></script>
+    <!-- MODAL 1: TAMBAH / EDIT CATATAN AKUN -->
+    <div class="modal-overlay" id="modal-note-single" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-head">
+                <div class="modal-title" id="note-modal-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    <span>Tambah Catatan Akun</span>
+                </div>
+                <button class="btn-close-modal" id="btn-close-note-single">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="input-note-id">
+                <div class="form-group">
+                    <label class="form-label">Email Akun (Anak / Target): <span style="color: var(--color-red);">*</span></label>
+                    <input type="text" class="form-input" id="input-note-email" placeholder="contoh: budi123@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Folder / Email Induk (Ortu):</label>
+                    <input type="text" class="form-input" id="input-note-ortu" list="datalist-ortu-folders" placeholder="Pilih atau ketik email induk ortu...">
+                    <datalist id="datalist-ortu-folders"></datalist>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password Akun (Opsional):</label>
+                    <input type="text" class="form-input" id="input-note-password" placeholder="Password akun jika ada...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status Akun:</label>
+                    <select class="form-select" id="input-note-status">
+                        <option value="UNCHECKED">Belum Dicek (Unchecked)</option>
+                        <option value="CLEAN">✓ CLEAN (Bebas Captcha - Siap Login)</option>
+                        <option value="CAPTCHA">⚠️ CAPTCHA (Ada Tantangan Bot)</option>
+                        <option value="NOT_FOUND">NOT FOUND (Tidak Terdaftar)</option>
+                        <option value="BLOCKED">RECHECK / ERROR</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Catatan Tambahan / Keterangan:</label>
+                    <textarea class="form-textarea" id="input-note-detail" rows="2" placeholder="Tulis catatan penting akun ini..."></textarea>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-cancel" id="btn-cancel-note-single">Batal</button>
+                <button class="btn-confirm-export" id="btn-save-note-single">Simpan Catatan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL IMPORT RIWAYAT KE CATATAN AKUN -->
+    <div class="modal-overlay" id="modal-import-history" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-head">
+                <div class="modal-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="14 2 14 8 20 8"></polyline><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    Import dari Riwayat Pengecekan
+                </div>
+                <button class="btn-close-modal" id="btn-close-import-history">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">1. Pilih Kategori Hasil yang Ingin Diambil:</label>
+                    <select class="form-select" id="select-import-history-status">
+                        <option value="NOT_IN_NOTES" selected>Hanya yang Belum Masuk Catatan (Baru) — <span id="import-count-not-in-notes">0</span> akun</option>
+                        <option value="CLEAN_NOT_IN_NOTES">Hanya CLEAN yang Belum Masuk — <span id="import-count-clean-not-in-notes">0</span> akun</option>
+                        <option value="CLEAN">Hanya CLEAN (Bebas Captcha) — <span id="import-count-clean">0</span> akun</option>
+                        <option value="ALL">Semua Hasil Riwayat — <span id="import-count-all">0</span> akun</option>
+                        <option value="CAPTCHA">Hanya CAPTCHA — <span id="import-count-captcha">0</span> akun</option>
+                        <option value="NOT_FOUND">Hanya NOT FOUND — <span id="import-count-notfound">0</span> akun</option>
+                        <option value="UNCHECKED">Hanya Belum Dicek (Unchecked) — <span id="import-count-unchecked">0</span> akun</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">2. Lokasi Tujuan Akun (Opsional):</label>
+                    <input type="text" class="form-input" id="input-import-ortu-target" list="datalist-ortu-folders" placeholder="Kosongkan untuk memasukkan ke Umum (Luar Folder)...">
+                    <div class="form-hint" style="margin-top: 6px;">
+                        💡 Biarkan kosong agar akun masuk ke <strong>Daftar Akun Umum</strong>, sehingga Anda bisa leluasa memilih dan menarik (drag & drop) akun ke folder ortu yang diinginkan.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-cancel" id="btn-cancel-import-history">Batal</button>
+                <button class="btn-confirm-export" id="btn-confirm-import-history">
+                    Mulai Import Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: BATCH IMPORT CATATAN AKUN -->
+    <div class="modal-overlay" id="modal-note-batch" style="display: none;">
+        <div class="modal-box modal-box-lg">
+            <div class="modal-head">
+                <div class="modal-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Batch Import Catatan Akun
+                </div>
+                <button class="btn-close-modal" id="btn-close-note-batch">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Folder Ortu Tujuan (Default jika di baris tidak ada ortu):</label>
+                    <input type="text" class="form-input" id="batch-note-default-ortu" list="datalist-ortu-folders-batch" placeholder="Pilih atau ketik nama folder ortu...">
+                    <datalist id="datalist-ortu-folders-batch"></datalist>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tempel Daftar Akun (Format: <code>email:pass:ortu</code> atau <code>email|pass|ortu</code> atau <code>email:pass</code> atau <code>email</code>):</label>
+                    <textarea class="form-textarea" id="batch-note-input" rows="8" placeholder="yogaxilham18@gmail.com:pass123:ortu1@gmail.com&#10;mayaxdewi0@gmail.com:mypass:ortu1@gmail.com&#10;rinatinax11@gmail.com"></textarea>
+                    <div class="form-hint">Otomatis mendeteksi pemisah ':' atau '|' serta menambahkan @gmail.com jika hanya username.</div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-cancel" id="btn-cancel-note-batch">Batal</button>
+                <button class="btn-confirm-export" id="btn-save-note-batch">Simpan Semua Akun</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: BUAT FOLDER BARU -->
+    <div class="modal-overlay" id="modal-create-folder" style="display: none;">
+        <div class="modal-box modal-box-sm">
+            <div class="modal-head">
+                <div class="modal-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                    Buat Folder Baru
+                </div>
+                <button class="btn-close-modal" id="btn-close-create-folder">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nama Folder:</label>
+                    <input type="text" class="form-input" id="input-new-folder-name" placeholder="contoh: ortu.master@gmail.com atau Folder Tim 1" required>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-cancel" id="btn-cancel-create-folder">Batal</button>
+                <button class="btn-confirm-export" id="btn-save-create-folder">Buat Folder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: EXPORT CATATAN AKUN -->
+    <div class="modal-overlay" id="modal-note-export" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-head">
+                <div class="modal-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Export Catatan Akun
+                </div>
+                <button class="btn-close-modal" id="btn-close-note-export">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">1. Pilih Folder Ortu yang Diexport:</label>
+                    <select class="form-select" id="export-note-folder-select">
+                        <option value="ALL">Semua Folder (Seluruh Akun)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">2. Pilih Kategori Status:</label>
+                    <select class="form-select" id="export-note-status-select">
+                        <option value="ALL">Semua Status</option>
+                        <option value="CLEAN">Hanya CLEAN</option>
+                        <option value="CAPTCHA">Hanya CAPTCHA</option>
+                        <option value="NOT_FOUND">Hanya NOT FOUND</option>
+                        <option value="UNCHECKED">Hanya Belum Dicek (Unchecked)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">3. Format File Unduhan:</label>
+                    <div class="format-options">
+                        <label class="radio-label">
+                            <input type="radio" name="export-note-format" value="txt_combo" checked>
+                            <span><strong>TXT Combo (email:pass:ortu)</strong> — Sangat rapi untuk backup & bot</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="export-note-format" value="txt_email_only">
+                            <span><strong>TXT (Hanya Alamat Email)</strong> — 1 email per baris</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="export-note-format" value="csv">
+                            <span><strong>CSV Spreadsheet</strong> — Format tabel Excel dengan kolom lengkap</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="export-note-format" value="txt_full">
+                            <span><strong>TXT Lengkap</strong> — Rincian detail beserta status dan catatan</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-cancel" id="btn-cancel-note-export">Batal</button>
+                <button class="btn-confirm-export" id="btn-confirm-note-export">
+                    Download File Catatan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/sweetalert2.all.min.js"></script>
+    <script src="/static/app.js?v=20260920_01"></script>
 </body>
 </html>

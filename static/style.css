@@ -1211,3 +1211,594 @@ input:checked + .toggle-slider:before {
         width: 100%;
     }
 }
+
+/* ==========================================================================
+   VIEW 3: CATATAN AKUN (CLEAN FILE EXPLORER STYLE)
+   ========================================================================== */
+.notes-box {
+    gap: 16px;
+    min-height: 520px;
+}
+
+/* Explorer Address Bar / Toolbar */
+.explorer-address-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    background: #080f20;
+    border: 1px solid #162442;
+    border-radius: 9px;
+    flex-wrap: wrap;
+}
+
+.explorer-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+}
+
+.crumb-root {
+    font-weight: 700;
+    color: #60a5fa;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.crumb-root:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+.crumb-sep {
+    color: #475569;
+    font-weight: 600;
+}
+
+.crumb-current {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* Explorer Folder Grid (Persis Seperti File Explorer) */
+.folders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    width: 100%;
+    padding: 8px 2px;
+    min-height: 110px;
+    align-content: start;
+}
+
+.explorer-folder-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #0b1324;
+    border: 1px solid #1a2744;
+    border-radius: 9px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 62px;
+    overflow: hidden;
+}
+
+.explorer-folder-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #2b426f;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Single-click selected state ala Windows Explorer */
+.explorer-folder-item.selected {
+    background: rgba(37, 99, 235, 0.22) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 1px #3b82f6, 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Drag-and-drop hover state (saat akun ditarik ke folder ini) */
+.explorer-folder-item.folder-drop-active {
+    background: rgba(37, 99, 235, 0.38) !important;
+    border: 2px dashed #60a5fa !important;
+    box-shadow: 0 0 18px rgba(59, 130, 246, 0.7) !important;
+    transform: scale(1.04) !important;
+}
+
+.explorer-folder-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 32px;
+    transition: transform 0.15s;
+}
+
+.explorer-folder-icon svg {
+    width: 38px;
+    height: 32px;
+}
+
+.explorer-folder-item:hover .explorer-folder-icon {
+    transform: scale(1.06);
+}
+
+.explorer-folder-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-right: 2px;
+}
+
+/* Nama folder jelas, tebal, dan leluasa */
+.explorer-folder-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.32;
+    transition: max-width 0.15s ease;
+}
+
+/* Saat hover, beri ruang untuk tombol ringkas agar teks tidak tertabrak */
+.explorer-folder-item:hover .explorer-folder-name {
+    max-width: calc(100% - 74px);
+}
+
+.explorer-folder-count-badge {
+    font-size: 0.73rem;
+    color: #94a3b8;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Toolbar tombol ringkas mengambang di sisi kanan (hemat ruang) */
+.explorer-folder-actions {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    background: #0d172e;
+    border: 1px solid #22355c;
+    border-radius: 6px;
+    padding: 2px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+    z-index: 10;
+}
+
+.explorer-folder-item:hover .explorer-folder-actions {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.btn-explorer-action {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.btn-explorer-action:hover {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+.btn-explorer-action.btn-del:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.btn-explorer-action.btn-del-history {
+    color: #f87171;
+}
+.btn-explorer-action.btn-del-history:hover {
+    background: #b91c1c;
+    color: #ffffff;
+}
+
+/* General Accounts Section (Akun Umum di Bawah Folder) */
+.general-accounts-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid #142038;
+    padding-top: 18px;
+}
+
+.general-accounts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.gah-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gah-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0;
+}
+
+.gah-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 3px 0 0 0;
+}
+
+.gah-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #0e172a;
+    border: 1px solid #1e293b;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.selection-count-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #60a5fa;
+}
+
+.move-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.select-sm {
+    padding: 4px 8px;
+    font-size: 0.78rem;
+    height: 30px;
+}
+
+/* Draggable Rows */
+.draggable-row {
+    cursor: grab;
+    transition: background 0.15s, opacity 0.15s;
+}
+
+.draggable-row:active {
+    cursor: grabbing;
+}
+
+.draggable-row.dragging {
+    opacity: 0.4;
+    background: rgba(59, 130, 246, 0.25) !important;
+}
+
+.drag-handle {
+    color: #475569;
+    cursor: grab;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 6px;
+    user-select: none;
+}
+
+.draggable-row:hover .drag-handle {
+    color: #94a3b8;
+}
+
+/* Folder Empty State */
+.folder-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    background: #080f20;
+    border: 1px dashed #1c2b4a;
+    border-radius: 12px;
+    text-align: center;
+    gap: 12px;
+}
+
+.folder-empty-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #111a2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+}
+
+.folder-empty-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #e2e8f0;
+}
+
+.folder-empty-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    max-width: 360px;
+}
+
+/* ==========================================================================
+   FOLDER DETAIL DRILLDOWN VIEW
+   ========================================================================== */
+.folder-detail-view {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.folder-detail-top {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #080f20;
+    border: 1px solid #162442;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.btn-back-folders {
+    background: transparent;
+    border: none;
+    color: var(--color-blue-light);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    padding: 2px 0;
+    transition: color 0.2s;
+}
+
+.btn-back-folders:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.folder-detail-title-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.folder-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.folder-opened-name {
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.folder-opened-badge {
+    background: #15223c;
+    border: 1px solid #233966;
+    color: #93c5fd;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.folder-opened-meta {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.folder-detail-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    border-top: 1px solid #111a30;
+}
+
+/* Extra toolbar in Notes Table */
+.notes-filter-extra {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.select-ortu-filter {
+    max-width: 200px;
+    background: #0d1527;
+    border: 1px solid #1c2b4a;
+    color: #e2e8f0;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+/* Modals sizing & forms */
+.modal-box-lg {
+    max-width: 580px;
+}
+
+.modal-box-sm {
+    max-width: 400px;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    background: #080f20;
+    border: 1px solid #182542;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus, .form-textarea:focus {
+    border-color: var(--color-blue);
+}
+
+.form-textarea {
+    resize: vertical;
+    font-family: var(--font-mono);
+    line-height: 1.4;
+}
+
+.form-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Responsive adjustments for Notes */
+@media (max-width: 960px) {
+    .notes-layout {
+        grid-template-columns: 1fr;
+    }
+    .notes-sidebar {
+        position: static;
+    }
+}
+
+/* ==========================================================================
+   SWEETALERT2 CUSTOM PREMIUM DARK STYLING
+   ========================================================================== */
+.swal2-popup.swal-custom-popup {
+    background: #0d1527 !important;
+    border: 1px solid #1e293b !important;
+    border-radius: 14px !important;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+    font-family: var(--font-sans) !important;
+    padding: 1.75rem !important;
+}
+
+.swal2-title {
+    color: #f8fafc !important;
+    font-size: 1.18rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.swal2-html-container {
+    color: #94a3b8 !important;
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+    margin: 0.5rem 0 1rem 0 !important;
+}
+
+.swal2-actions {
+    margin-top: 1.25rem !important;
+    gap: 10px !important;
+}
+
+.swal2-styled {
+    font-family: var(--font-sans) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    padding: 9px 20px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.swal2-styled.swal2-confirm {
+    background: #2563eb !important;
+    border: 1px solid #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+.swal2-styled.swal2-confirm:hover {
+    background: #1d4ed8 !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35) !important;
+    transform: translateY(-1px) !important;
+}
+
+.swal2-styled.swal2-cancel {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+.swal2-styled.swal2-cancel:hover {
+    background: #334155 !important;
+    color: #ffffff !important;
+}
+
+.swal2-styled.btn-danger-swal {
+    background: #dc2626 !important;
+    border-color: #ef4444 !important;
+}
+
+.swal2-styled.btn-danger-swal:hover {
+    background: #b91c1c !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35) !important;
+}
+
+/* Toast SweetAlert2 Dark Mode */
+.swal2-container.swal2-top-end .swal2-popup.swal2-toast {
+    background: #0f172a !important;
+    border: 1px solid #1e293b !important;
+    border-radius: 10px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+    padding: 0.75rem 1rem !important;
+    font-family: var(--font-sans) !important;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: #f1f5f9 !important;
+    margin: 0 !important;
+}
+
+
